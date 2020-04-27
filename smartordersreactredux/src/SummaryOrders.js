@@ -37,9 +37,10 @@ import { useState } from 'react';
             return {order: item, qty: props.orders.filter(or=>JSON.stringify(or)===JSON.stringify(item)).length};
         });
         red = red.filter(el => { // REMOVE DUPLICATES 
-            const duplicate = seen.has(el.order.key); // ALTHOUGHT CANNOT BE KEYS 
-            seen.add(el.order.key);
-            return !duplicate;
+            const duplicate = seen.has(JSON.stringify(el.order)); // ALTHOUGHT CANNOT BE KEYS 
+            seen.add(JSON.stringify(el.order));
+            console.log("seen" + seen)
+            return !duplicate; 
         });
         props.store.dispatch(setFooterLength(red.length));
         return red
@@ -47,7 +48,7 @@ import { useState } from 'react';
     const redOrd = getReducedOrders(props.orders)
     const elements = redOrd.map(element => <div> <br></br>
         <div style ={{float: "left", paddingLeft: "20px",fontWeight: "bold"}}>
-            {element.order.name + " x " + element.qty}
+            {element.order.name +" "+(element.order.options.length>0?(element.order.options.reduce((prev,curr)=>prev.elements.find(e=>e.isChosen).name+" "+curr.elements.find(e=>e.isChosen).name)+ " x " + element.qty):"")}
         </div>
         <div style ={{float: "right",paddingRight: "20px",fontWeight: "bold"}}>
             {(element.order.price*element.qty).toFixed(2)}{' ' + currency}

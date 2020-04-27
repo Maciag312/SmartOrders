@@ -25,7 +25,7 @@ class MenuElement extends React.Component {
     additem = (key) => {
         const el = this.props.items.find(e=>e.key===key)
         if(el.options.length>0)
-            this.props.store.dispatch(openmodal(key))
+            this.props.store.dispatch(openmodal(el))
         this.props.store.dispatch(additem(key));
         this.props.store.dispatch(puttotalprice());
 
